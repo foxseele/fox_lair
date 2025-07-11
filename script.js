@@ -77,130 +77,128 @@ document.addEventListener('DOMContentLoaded', () => {
                 theseus: {
                     title: "Вы — Тесей!",
                     description: "Вы прирождённый лидер и герой. Вы не боитесь брать на себя ответственность и смело идёте к цели. Люди следуют за вами, но иногда в погоне за великими свершениями вы можете забывать о деталях, что приводит к неожиданным последствиям.",
-                    image: "https://i.ibb.co/placeholder/theseus.jpg" // Замените на актуальную ссылку
+                    image: "/images/theseus.png" // Замените на актуальную ссылку
                 },
                 ariadne: {
                     title: "Вы — Ариадна!",
                     description: "Ваше сердце полно любви и сострадания. Вы готовы на всё ради тех, кто вам дорог, и умеете найти выход из самой запутанной ситуации. Ваша сила — в вашей вере в других и в вашей интуиции, которая подсказывает верные решения.",
-                    image: "https://i.ibb.co/placeholder/ariadne.jpg" // Замените на актуальную ссылку
+                    image: "/images/ariadne.png" // Замените на актуальную ссылку
                 },
                 daedalus: {
                     title: "Вы — Дедал!",
                     description: "Вы — гений, творец и изобретатель. Ваш ум способен решать задачи, которые другим кажутся невыполнимыми. Вы видите мир как большую мастерскую, полную возможностей. Главное для вас — не запутаться в последствиях собственных творений.",
-                    image: "https://i.ibb.co/placeholder/daedalus.jpg" // Замените на актуальную ссылку
+                    image: "/images/daedalus.png" // Замените на актуальную ссылку
                 },
                 minos: {
                     title: "Вы — Минос!",
                     description: "Вы — прирождённый правитель. Вы цените порядок, закон и власть. Вы умеете строить системы и требовать их исполнения. Вы сильный и гордый лидер, но ваша непреклонность и жажда справедливости могут легко превратиться в жестокость.",
-                    image: "https://i.ibb.co/placeholder/minos.jpg" // Замените на актуальную ссылку
+                    image: "/images/minos.png" // Замените на актуальную ссылку
                 },
                 icarus: {
                     title: "Вы — Икар!",
                     description: "Вы — мечтатель, полный энтузиазма и восторга. Для вас жизнь — это захватывающее приключение. Вы готовы рискнуть всем ради одного момента чистого, незамутнённого счастья и нового опыта. Ваш девиз — «лететь как можно выше!»",
-                    image: "https://i.ibb.co/placeholder/icarus.jpg" // Замените на актуальную ссылку
+                    image: "/images/icarus.png" // Замените на актуальную ссылку
                 }
             }
         }
     }
-},
-        // СЮДА В БУДУЩЕМ ВЫ СМОЖЕТЕ ДОБАВИТЬ НОВЫЙ ТЕСТ
-        // 'theseusVsMinotaur': { ... }
-    };
+    // СЮДА В БУДУЩЕМ ВЫ СМОЖЕТЕ ДОБАВИТЬ НОВЫЙ ТЕСТ
+    // 'theseusVsMinotaur': { ... }
 
-let currentQuizId = null;
-let currentQuestionIndex = 0;
-let scores = {};
+    let currentQuizId = null;
+    let currentQuestionIndex = 0;
+    let scores = {};
 
-// --- Инициализация ---
-function init() {
-    // Рендерим список тестов в главном меню
-    quizListContainer.innerHTML = '';
-    for (const quizId in quizzes) {
-        const quiz = quizzes[quizId];
-        const button = document.createElement('button');
-        button.className = 'quiz-button';
-        button.innerHTML = `
+    // --- Инициализация ---
+    function init() {
+        // Рендерим список тестов в главном меню
+        quizListContainer.innerHTML = '';
+        for (const quizId in quizzes) {
+            const quiz = quizzes[quizId];
+            const button = document.createElement('button');
+            button.className = 'quiz-button';
+            button.innerHTML = `
                 ${quiz.title}
                 <div class="description">${quiz.description}</div>
             `;
-        button.onclick = () => startQuiz(quizId);
-        quizListContainer.appendChild(button);
+            button.onclick = () => startQuiz(quizId);
+            quizListContainer.appendChild(button);
+        }
+
+        // Показываем меню
+        showScreen('menu');
     }
 
-    // Показываем меню
-    showScreen('menu');
-}
-
-function startQuiz(quizId) {
-    currentQuizId = quizId;
-    currentQuestionIndex = 0;
-    scores = {}; // Сбрасываем очки
-    showScreen('quiz');
-    displayQuestion();
-}
-
-function displayQuestion() {
-    const quizData = quizzes[currentQuizId];
-    const question = quizData.questions[currentQuestionIndex];
-    questionTitle.textContent = question.text;
-    optionsContainer.innerHTML = '';
-    progressBar.style.width = `${((currentQuestionIndex + 1) / quizData.questions.length) * 100}%`;
-
-    question.options.forEach(option => {
-        const button = document.createElement('button');
-        button.textContent = option.text;
-        button.onclick = () => selectOption(option.type);
-        optionsContainer.appendChild(button);
-    });
-}
-
-function selectOption(type) {
-    // Увеличиваем счетчик для выбранного типа
-    scores[type] = (scores[type] || 0) + 1;
-
-    currentQuestionIndex++;
-    const quizData = quizzes[currentQuizId];
-    if (currentQuestionIndex < quizData.questions.length) {
+    function startQuiz(quizId) {
+        currentQuizId = quizId;
+        currentQuestionIndex = 0;
+        scores = {}; // Сбрасываем очки
+        showScreen('quiz');
         displayQuestion();
-    } else {
-        showResult();
     }
-}
 
-function showResult() {
-    let maxScore = -1;
-    let resultType = '';
-    for (const type in scores) {
-        if (scores[type] > maxScore) {
-            maxScore = scores[type];
-            resultType = type;
+    function displayQuestion() {
+        const quizData = quizzes[currentQuizId];
+        const question = quizData.questions[currentQuestionIndex];
+        questionTitle.textContent = question.text;
+        optionsContainer.innerHTML = '';
+        progressBar.style.width = `${((currentQuestionIndex + 1) / quizData.questions.length) * 100}%`;
+
+        question.options.forEach(option => {
+            const button = document.createElement('button');
+            button.textContent = option.text;
+            button.onclick = () => selectOption(option.type);
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function selectOption(type) {
+        // Увеличиваем счетчик для выбранного типа
+        scores[type] = (scores[type] || 0) + 1;
+
+        currentQuestionIndex++;
+        const quizData = quizzes[currentQuizId];
+        if (currentQuestionIndex < quizData.questions.length) {
+            displayQuestion();
+        } else {
+            showResult();
         }
     }
 
-    const result = quizzes[currentQuizId].results[resultType];
-    resultTitle.textContent = result.title;
-    resultDescription.textContent = result.description;
-    resultImage.src = result.image;
-    showScreen('result');
-}
+    function showResult() {
+        let maxScore = -1;
+        let resultType = '';
+        for (const type in scores) {
+            if (scores[type] > maxScore) {
+                maxScore = scores[type];
+                resultType = type;
+            }
+        }
 
-function shareResult() {
-    const resultText = resultTitle.textContent;
-    const quizTitle = quizzes[currentQuizId].title;
-    const shareText = `Я прошёл "${quizTitle}" и я — ${resultText.replace('Вы — ', '').replace('!', '')}! 🏛️ Узнай, кто ты!`;
-    tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/YourChannelName&text=${encodeURIComponent(shareText)}`);
-    // ЗАМЕНИТЕ YourChannelName на юзернейм вашего канала
-}
+        const result = quizzes[currentQuizId].results[resultType];
+        resultTitle.textContent = result.title;
+        resultDescription.textContent = result.description;
+        resultImage.src = result.image;
+        showScreen('result');
+    }
 
-function showScreen(screenName) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(`${screenName}-screen`).classList.add('active');
-}
+    function shareResult() {
+        const resultText = resultTitle.textContent;
+        const quizTitle = quizzes[currentQuizId].title;
+        const shareText = `Я прошёл "${quizTitle}" и я — ${resultText.replace('Вы — ', '').replace('!', '')}! 🏛️ Узнай, кто ты!`;
+        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/YourChannelName&text=${encodeURIComponent(shareText)}`);
+        // ЗАМЕНИТЕ YourChannelName на юзернейм вашего канала
+    }
 
-// --- Навешиваем события ---
-backToMenuBtn.addEventListener('click', init);
-shareBtn.addEventListener('click', shareResult);
+    function showScreen(screenName) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(`${screenName}-screen`).classList.add('active');
+    }
 
-// --- Запускаем приложение ---
-init();
+    // --- Навешиваем события ---
+    backToMenuBtn.addEventListener('click', init);
+    shareBtn.addEventListener('click', shareResult);
+
+    // --- Запускаем приложение ---
+    init();
 });
