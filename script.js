@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     const quizzes = {
         'labyrinthOfCrete': {
-            title: "Тест: Лабиринт Крита",
-            description: "Кем бы вы были в мифе о Лабиринте Крита?",
+            title: "Тест: Лабиринт Минотавра",
+            description: "Кем бы вы были в мифе о Минотавре?",
             questions: [
                 {
                     text: "Перед вами встала серьёзная проблема. Ваша первая реакция?",
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultText = resultTitle.textContent;
         const quizTitle = quizzes[currentQuizId].title;
         const shareText = `Я прошёл "${quizTitle}" и я — ${resultText.replace('Вы — ', '').replace('!', '')}! 🏛️ Узнай, кто ты!`;
-        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/YourChannelName&text=${encodeURIComponent(shareText)}`);
+        tg.openTelegramLink(`https://t.me/share/url?url=https://t.me/foxseele_tg&text=${encodeURIComponent(shareText)}`);
         // ЗАМЕНИТЕ YourChannelName на юзернейм вашего канала
     }
 
